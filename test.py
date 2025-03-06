@@ -93,10 +93,10 @@ try:
       
       # control FAN
       if pulse_width_brake > 1700:
-         pi.write(FAN_PIN,1)
+         pi.write(FAN_PIN,0)
          print("     !!!BRAKE!!!")
       elif pulse_width_brake < 1700:
-         pi.write(FAN_PIN,0)
+         pi.write(FAN_PIN,1)
          
 
       # Set PWM brightness for speed pins
