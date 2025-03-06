@@ -94,6 +94,7 @@ try:
       # control FAN
       if pulse_width_brake > 1700:
          pi.write(FAN_PIN,1)
+         print("     !!!BRAKE!!!")
       elif pulse_width_brake < 1700:
          pi.write(FAN_PIN,0)
          
