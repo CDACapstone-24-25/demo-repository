@@ -82,10 +82,10 @@ try:
          right_speed = max(0, min(255, int((pulse_width_right - 1500) * (255 / 500))))  # Scale 1500-2000 to 0-255
 
       # Set PWM brightness for speed pins
-      pi.set_PWM_dutycycle(LEFT_DIR_PIN, left_speed)
-      # pi.set_PWM_dutycycle(LEFT_DIR_PIN_2, brightness)
-      pi.set_PWM_dutycycle(RIGHT_DIR_PIN, right_speed)
-      # pi.set_PWM_dutycycle(RIGHT_DIR_PIN_2, brightness)
+      pi.set_PWM_dutycycle(LEFT_SPEED_PIN, left_speed)
+      # pi.set_PWM_dutycycle(LEFT_SPEED_PIN_2, brightness)
+      pi.set_PWM_dutycycle(RIGHT_SPEED_PIN, right_speed)
+      # pi.set_PWM_dutycycle(RIGHT_SPEED_PIN_2, brightness)
 
       print(f"LEFT IN Pulse: {pulse_width_left} µs, LEFT DIR: {'ON' if pulse_width_left > 1500 else 'OFF'}, LEFT SPEED: {left_speed}")
       print(f"RIGHT IN Pulse: {pulse_width_right} µs, RIGHT DIR: {'OFF' if pulse_width_right > 1500 else 'ON'}, RIGHT SPEED: {right_speed}\n")
