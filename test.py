@@ -72,11 +72,11 @@ try:
          pi.write(LEFT_DIR_PIN, 0)  # Turn LED OFF
          brightness = max(0, min(255, int((1500 - pulse_width_left) * (255 / 500))))  # Scale 1500-1000 to 0-255
       # Control RIGHT side
-      if pulse_width_left < 1500:
-         pi.write(LEFT_DIR_PIN, 0)  # Turn LED OFF
+      if pulse_width_right < 1500:
+         pi.write(RIGHT_DIR_PIN, 0)  # Turn LED OFF
          brightness = max(0, min(255, int((1500 - pulse_width_right) * (255 / 500))))  # Scale 1500-1000 to 0-255
       else:
-         pi.write(LEFT_DIR_PIN, 1)  # Turn LED ON
+         pi.write(RIGHT_DIR_PIN, 1)  # Turn LED ON
          brightness = max(0, min(255, int((pulse_width_right - 1500) * (255 / 500))))  # Scale 1500-2000 to 0-255
 
       # Set PWM brightness for speed pins
