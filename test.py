@@ -63,30 +63,32 @@ pi.callback(LEFT_INPUT_PIN, pigpio.EITHER_EDGE, pulse_callback)
 pi.callback(RIGHT_INPUT_PIN, pigpio.EITHER_EDGE, pulse_callback)
 
 try:
+   left_speed=0
+   right_speed=0
    while True:
       # Control LEFT side
       if pulse_width_left > 1500:
          pi.write(LEFT_DIR_PIN, 1)  # Turn LED ON
-         brightness = max(0, min(255, int((pulse_width_left - 1500) * (255 / 500))))  # Scale 1500-2000 to 0-255
+         left_speed = max(0, min(255, int((pulse_width_left - 1500) * (255 / 500))))  # Scale 1500-2000 to 0-255
       else:
          pi.write(LEFT_DIR_PIN, 0)  # Turn LED OFF
-         brightness = max(0, min(255, int((1500 - pulse_width_left) * (255 / 500))))  # Scale 1500-1000 to 0-255
+         left_speed = max(0, min(255, int((1500 - pulse_width_left) * (255 / 500))))  # Scale 1500-1000 to 0-255
       # Control RIGHT side
       if pulse_width_right < 1500:
          pi.write(RIGHT_DIR_PIN, 0)  # Turn LED OFF
-         brightness = max(0, min(255, int((1500 - pulse_width_right) * (255 / 500))))  # Scale 1500-1000 to 0-255
+         right_speed = max(0, min(255, int((1500 - pulse_width_right) * (255 / 500))))  # Scale 1500-1000 to 0-255
       else:
          pi.write(RIGHT_DIR_PIN, 1)  # Turn LED ON
-         brightness = max(0, min(255, int((pulse_width_right - 1500) * (255 / 500))))  # Scale 1500-2000 to 0-255
+         right_speed = max(0, min(255, int((pulse_width_right - 1500) * (255 / 500))))  # Scale 1500-2000 to 0-255
 
       # Set PWM brightness for speed pins
-      pi.set_PWM_dutycycle(LEFT_DIR_PIN, brightness)
+      pi.set_PWM_dutycycle(LEFT_DIR_PIN, left_speed)
       # pi.set_PWM_dutycycle(LEFT_DIR_PIN_2, brightness)
-      pi.set_PWM_dutycycle(RIGHT_DIR_PIN, brightness)
+      pi.set_PWM_dutycycle(RIGHT_DIR_PIN, right_speed)
       # pi.set_PWM_dutycycle(RIGHT_DIR_PIN_2, brightness)
 
-      print(f"LEFT IN Pulse: {pulse_width_left} µs, LEFT DIR: {'ON' if pulse_width_left > 1500 else 'OFF'}, LEFT SPEED: {brightness}")
-      print(f"RIGHT IN Pulse: {pulse_width_right} µs, RIGHT DIR: {'OFF' if pulse_width_right > 1500 else 'ON'}, RIGHT SPEED: {brightness}\n")
+      print(f"LEFT IN Pulse: {pulse_width_left} µs, LEFT DIR: {'ON' if pulse_width_left > 1500 else 'OFF'}, LEFT SPEED: {left_speed}")
+      print(f"RIGHT IN Pulse: {pulse_width_right} µs, RIGHT DIR: {'OFF' if pulse_width_right > 1500 else 'ON'}, RIGHT SPEED: {right_speed}\n")
       
       time.sleep(0.1)  # Update every 100ms
 except KeyboardInterrupt:
@@ -94,16 +96,16 @@ except KeyboardInterrupt:
 
 finally:
    # make sure all motors are off
-   pi.write(LEFT_SPEED_PIN, 0) 
-   # pi.write(LEFT_SPEED_PIN_2, 0)  
-   pi.write(RIGHT_SPEED_PIN, 0) 
-   # pi.write(RIGHT_SPEED_PIN_2, 0) 
+   pi.write(LEFT_DIR_PIN, 0) 
+   # pi.write(LEFT_DIR_PIN_2, 0)  
+   pi.write(RIGHT_DIR_PIN, 0) 
+   # pi.write(RIGHT_DIR_PIN_2, 0) 
    
    
-   pi.set_PWM_dutycycle(LEFT_DIR_PIN, 0)  # Turn off PWM
-   # pi.set_PWM_dutycycle(LEFT_DIR_PIN_2, 0)  # Turn off PWM
-   pi.set_PWM_dutycycle(RIGHT_DIR_PIN, 0)  # Turn off PWM
-   # pi.set_PWM_dutycycle(RIGHT_DIR_PIN_2, 0)  # Turn off PWM
+   pi.set_PWM_dutycycle(LEFT_SPEED_PIN, 0)  # Turn off PWM
+   # pi.set_PWM_dutycycle(LEFT_SPEED_PIN_2, 0)  # Turn off PWM
+   pi.set_PWM_dutycycle(RIGHT_SPEED_PIN, 0)  # Turn off PWM
+   # pi.set_PWM_dutycycle(RIGHT_SPEED_PIN_2, 0)  # Turn off PWM
    
    
    pi.stop()  # Clean up pigpio connection
