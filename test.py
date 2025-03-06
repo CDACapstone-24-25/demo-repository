@@ -46,21 +46,26 @@ pulse_width_right = 1500  # Default neutral position
 pulse_width_left = 1500  # Default neutral position
 last_tick = {}
 
-def pulse_callback(gpio, level, tick):
+def pulse_callback_left(gpio, level, tick):
    """ Callback function to measure PWM pulse width. """
-   global last_tick, pulse_width_right, pulse_width_left
-
+   global last_tick, pulse_width_left
    if level == 1:  # Rising edge
       last_tick[gpio] = tick
    elif level == 0 and gpio in last_tick:  # Falling edge
-      if gpio==LEFT_INPUT_PIN:
-         pulse_width_left = pigpio.tickDiff(last_tick[gpio], tick)
-      elif gpio == RIGHT_DIR_PIN:
-         pulse_width_right = pigpio.tickDiff(last_tick[gpio], tick)
+      pulse_width_left = pigpio.tickDiff(last_tick[gpio], tick)
+      
+def pulse_callback_right(gpio, level, tick):
+   """ Callback function to measure PWM pulse width. """
+   global last_tick, pulse_width_right
+   if level == 1:  # Rising edge
+      last_tick[gpio] = tick
+   elif level == 0 and gpio in last_tick:  # Falling edge
+      pulse_width_right = pigpio.tickDiff(last_tick[gpio], tick)
+
          
 # Attach callback to measure PWM on pins 22 and 27 for both inputs
-pi.callback(LEFT_INPUT_PIN, pigpio.EITHER_EDGE, pulse_callback)
-pi.callback(RIGHT_INPUT_PIN, pigpio.EITHER_EDGE, pulse_callback)
+pi.callback(LEFT_INPUT_PIN, pigpio.EITHER_EDGE, pulse_callback_left)
+pi.callback(RIGHT_INPUT_PIN, pigpio.EITHER_EDGE, pulse_callback_right)
 
 try:
    while True:
