@@ -37,13 +37,13 @@ pi.set_mode(FAN_PIN, pigpio.OUTPUT)
 
 
 # Set up PWM pins for speed
-pi.set_PWM_frequency(LEFT_DIR_PIN, 100)  # Set PWM frequency to 100Hz
+pi.set_PWM_frequency(LEFT_SPEED_PIN, 100)  # Set PWM frequency to 100Hz
 # pi.set_PWM_frequency(LEFT_DIR_PIN_2, 100)  # Set PWM frequency to 100Hz
-pi.set_PWM_frequency(RIGHT_DIR_PIN, 100)  # Set PWM frequency to 100Hz
+pi.set_PWM_frequency(RIGHT_SPEED_PIN, 100)  # Set PWM frequency to 100Hz
 # pi.set_PWM_frequency(RIGHT_DIR_PIN_2, 100)  # Set PWM frequency to 100Hz
 
-pi.set_PWM_dutycycle(LEFT_DIR_PIN, 0)  # Start with LED off
-pi.set_PWM_dutycycle(RIGHT_DIR_PIN, 0) 
+pi.set_PWM_dutycycle(LEFT_SPEED_PIN, 0)  # Start with LED off
+pi.set_PWM_dutycycle(RIGHT_SPEED_PIN, 0) 
 
 # Variable to store pulse width
 # pulse_width_22 = 1500  # Default neutral position
@@ -75,6 +75,8 @@ try:
    left_speed=0
    right_speed=0
    pi.write(FAN_PIN,0)
+   pi.write(LEFT_DIR_PIN,0)
+   pi.write(RIGHT_DIR_PIN,0)
    while True:
       # Control LEFT side
       if pulse_width_left > 1500:
@@ -91,12 +93,12 @@ try:
          pi.write(RIGHT_DIR_PIN, 0)  # Turn LED ON
          right_speed = max(0, min(255, int((pulse_width_right - 1500) * (255 / 500))))  # Scale 1500-2000 to 0-255
       
-      # control FAN
-      if pulse_width_brake > 1700:
-         pi.write(FAN_PIN,0)
-         print("     !!!BRAKE!!!")
-      elif pulse_width_brake < 1700:
-         pi.write(FAN_PIN,1)
+      # # control FAN
+      # if pulse_width_brake > 1700:
+      #    pi.write(FAN_PIN,0)
+      #    print("     !!!BRAKE!!!")
+      # elif pulse_width_brake < 1700:
+      #    pi.write(FAN_PIN,1)
          
 
       # Set PWM brightness for speed pins
